@@ -11,6 +11,7 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 export const storage = {
   load() {
     try {
+      if (typeof window === "undefined") return null;
       const raw = window.localStorage.getItem(KEY);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
@@ -21,6 +22,7 @@ export const storage = {
   },
   save(data) {
     try {
+      if (typeof window === "undefined") return;
       window.localStorage.setItem(KEY, JSON.stringify(data));
     } catch {
       /* storage full or unavailable */
@@ -31,32 +33,46 @@ export const storage = {
 export const uid = (p = "id") => `${p}-${Date.now().toString(36)}${Math.floor(Math.random() * 1e4)}`;
 
 /* ---------------- Router (History API) ---------------- */
-const RouterCtx = createContext({ path: "/", navigate: () => {} });
+const RouterCtx = createContext({ path: "/", search: new URLSearchParams(), navigate: () => {} });
 
 export function RouterProvider({ initialPath, children }) {
-  const [path, setPath] = useState(initialPath || "/");
+  const [path, setPath] = useState(() => (typeof window !== "undefined" ? window.location.pathname + window.location.search : initialPath || "/"));
+
   useEffect(() => {
+    if (typeof window === "undefined") return;
     setPath(window.location.pathname + window.location.search);
     const onPop = () => setPath(window.location.pathname + window.location.search);
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+
   const navigate = useCallback((to, { replace } = {}) => {
     if (!to) return;
     if (/^(https?:|mailto:|tel:)/.test(to)) {
-      window.location.href = to;
+      if (typeof window !== "undefined") window.location.href = to;
       return;
     }
     const [p, hash] = to.split("#");
-    if (replace) window.history.replaceState({}, "", to);
-    else window.history.pushState({}, "", to);
-    setPath(p || "/");
-    if (hash) setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" }), 50);
-    else window.scrollTo({ top: 0 });
+    if (typeof window !== "undefined") {
+      if (replace) window.history.replaceState({}, "", to);
+      else window.history.pushState({}, "", to);
+      setPath(to);
+      if (hash) {
+        setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" }), 60);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    } else {
+      setPath(to);
+    }
   }, []);
-  const [pathname, search = ""] = path.split("?");
-  return <RouterCtx.Provider value={{ path: pathname || "/", search: new URLSearchParams(search), navigate }}>{children}</RouterCtx.Provider>;
+
+  const [pathname, searchStr = ""] = path.split("?");
+  const search = useMemo(() => new URLSearchParams(searchStr), [searchStr]);
+
+  return <RouterCtx.Provider value={{ path: pathname || "/", search, navigate }}>{children}</RouterCtx.Provider>;
 }
+
 export const useRouter = () => useContext(RouterCtx);
 
 export function Link({ to, children, className, onClick, ...rest }) {
@@ -103,7 +119,9 @@ export function AppProvider({ children }) {
     const saved = storage.load();
     if (saved) setData(saved);
     try {
-      setAuthed(window.localStorage.getItem(AUTH_KEY) === "1");
+      if (typeof window !== "undefined") {
+        setAuthed(window.localStorage.getItem(AUTH_KEY) === "1");
+      }
     } catch {}
     setLoaded(true);
   }, []);
@@ -117,7 +135,10 @@ export function AppProvider({ children }) {
     setTimeout(() => setToast(null), 3200);
   }, []);
 
-  const log = (d, text) => ({ ...d, activity: [{ id: uid("a"), text, date: new Date().toISOString() }, ...(d.activity || [])].slice(0, 30) });
+  const log = (d, text) => ({
+    ...d,
+    activity: [{ id: uid("a"), text, date: new Date().toISOString() }, ...(d.activity || [])].slice(0, 40),
+  });
 
   const actions = useMemo(
     () => ({
@@ -129,7 +150,10 @@ export function AppProvider({ children }) {
           const list = d[key] || [];
           const exists = list.some((x) => x.id === item.id);
           const next = exists ? list.map((x) => (x.id === item.id ? item : x)) : [...list, { ...item, id: item.id || uid(key.slice(0, 2)) }];
-          return log({ ...d, [key]: next }, `${exists ? "Updated" : "Added"} ${label || key}: ${item.title || item.name || item.label || item.caption || item.id}`);
+          return log(
+            { ...d, [key]: next },
+            `${exists ? "Updated" : "Added"} ${label || key}: ${item.title || item.name || item.label || item.caption || item.id}`
+          );
         });
       },
       remove(key, id, label) {
@@ -138,31 +162,63 @@ export function AppProvider({ children }) {
       patch(key, id, changes) {
         setData((d) => log({ ...d, [key]: d[key].map((x) => (x.id === id ? { ...x, ...changes } : x)) }, `Changed ${key} item`));
       },
+      reorder(key, id, direction) {
+        setData((d) => {
+          const list = [...(d[key] || [])];
+          const idx = list.findIndex((x) => x.id === id);
+          if (idx === -1) return d;
+          const targetIdx = direction === "up" ? idx - 1 : idx + 1;
+          if (targetIdx < 0 || targetIdx >= list.length) return d;
+          const temp = list[idx];
+          list[idx] = list[targetIdx];
+          list[targetIdx] = temp;
+          // If items have order attribute, normalize order
+          if ("order" in list[0]) {
+            list.forEach((item, i) => {
+              item.order = i + 1;
+            });
+          }
+          return log({ ...d, [key]: list }, `Reordered ${key}`);
+        });
+      },
+      canDeleteCategory(catId) {
+        const count = (data.products || []).filter((p) => p.category === catId).length;
+        return { allowed: count === 0, count };
+      },
       addEnquiry(enq) {
         const item = { ...enq, id: `ENQ-${Date.now().toString().slice(-6)}`, date: new Date().toISOString(), status: "New" };
         setData((d) => log({ ...d, enquiries: [item, ...d.enquiries] }, `New enquiry from ${enq.name}`));
         return item;
       },
       reset() {
-        setData(clone(initialData));
+        const fresh = clone(initialData);
+        fresh.activity = [{ id: uid("a"), text: "Reset all website data to factory defaults", date: new Date().toISOString() }];
+        setData(fresh);
       },
       login(email, password) {
         if (email.trim().toLowerCase() === DEMO_EMAIL && password === DEMO_PASSWORD) {
-          try { window.localStorage.setItem(AUTH_KEY, "1"); } catch {}
+          try {
+            if (typeof window !== "undefined") window.localStorage.setItem(AUTH_KEY, "1");
+          } catch {}
           setAuthed(true);
           return true;
         }
         return false;
       },
       logout() {
-        try { window.localStorage.removeItem(AUTH_KEY); } catch {}
+        try {
+          if (typeof window !== "undefined") window.localStorage.removeItem(AUTH_KEY);
+        } catch {}
         setAuthed(false);
       },
     }),
-    [],
+    [data]
   );
 
-  const value = useMemo(() => ({ data, loaded, authed, toast, notify, ...actions }), [data, loaded, authed, toast, notify, actions]);
+  const value = useMemo(
+    () => ({ data, loaded, authed, toast, notify, ...actions }),
+    [data, loaded, authed, toast, notify, actions]
+  );
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }
 

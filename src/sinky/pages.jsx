@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useApp, useRouter, catName, lines, Link } from "./store.jsx";
 import { IMG } from "./data.js";
 import {
@@ -28,18 +28,18 @@ export function Home() {
       <section className="relative overflow-hidden bg-forest-deep text-cream">
         <Img src={h.heroImage || data.settings.defaultBanner} alt="Premium plated food presentation" eager className="absolute inset-0 h-full w-full" />
         <div className="hero-veil absolute inset-0" />
-        <div className="container-x relative flex min-h-[78vh] flex-col justify-center py-24">
+        <div className="container-x relative flex min-h-[72vh] sm:min-h-[78vh] flex-col justify-center py-14 sm:py-20 md:py-28">
           <p className="eyebrow text-wheat">{h.eyebrow}</p>
-          <h1 className="mt-5 max-w-3xl font-serif text-5xl leading-[1.05] md:text-7xl">{h.heroHeading}</h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-cream/85">{h.heroText}</p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Btn to={h.cta1Link} variant="accent">{h.cta1Label} <Icon name="arrow" className="h-4 w-4" /></Btn>
-            <Btn to={h.cta2Link} variant="ghost-light">{h.cta2Label}</Btn>
+          <h1 className="mt-4 sm:mt-5 max-w-3xl font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">{h.heroHeading}</h1>
+          <p className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base md:text-lg leading-relaxed text-cream/85">{h.heroText}</p>
+          <div className="mt-7 sm:mt-9 flex flex-col gap-3 sm:flex-row">
+            <Btn to={h.cta1Link} variant="accent" className="w-full sm:w-auto justify-center">{h.cta1Label} <Icon name="arrow" className="h-4 w-4" /></Btn>
+            <Btn to={h.cta2Link} variant="ghost-light" className="w-full sm:w-auto justify-center">{h.cta2Label}</Btn>
           </div>
-          <ul className="mt-12 flex flex-wrap gap-3">
+          <ul className="mt-10 sm:mt-12 flex flex-wrap gap-2 sm:gap-3">
             {lines(h.trust).map((t) => (
-              <li key={t} className="flex items-center gap-2 rounded-full border border-cream/20 bg-forest-deep/40 px-4 py-2 text-sm backdrop-blur">
-                <Icon name="check" className="h-4 w-4 text-wheat" /> {t}
+              <li key={t} className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-cream/20 bg-forest-deep/40 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm backdrop-blur">
+                <Icon name="check" className="h-4 w-4 text-wheat shrink-0" /> <span>{t}</span>
               </li>
             ))}
           </ul>
@@ -47,33 +47,33 @@ export function Home() {
       </section>
 
       {/* Intro */}
-      <section className="container-x grid items-center gap-12 py-24 md:grid-cols-2">
+      <section className="container-x grid items-center gap-8 sm:gap-12 py-12 sm:py-16 md:py-24 md:grid-cols-2">
         <div className="relative">
-          <Img src={h.introImage} alt="Chef preparing food in a professional kitchen" className="aspect-[4/5] w-full rounded-3xl" />
-          <div className="absolute -bottom-6 -right-4 hidden rounded-2xl bg-terracotta px-6 py-5 text-cream shadow-soft md:block">
+          <Img src={h.introImage} alt="Chef preparing food in a professional kitchen" className="aspect-[4/5] w-full rounded-2xl sm:rounded-3xl" />
+          <div className="absolute -bottom-5 -right-3 hidden rounded-2xl bg-terracotta px-6 py-5 text-cream shadow-soft md:block">
             <p className="font-serif text-2xl">Mumbai</p><p className="text-xs tracking-widest">ANDHERI · MAHARASHTRA</p>
           </div>
         </div>
         <div>
           <p className="eyebrow">About the company</p>
-          <h2 className="mt-3 font-serif text-4xl leading-tight text-forest md:text-5xl">{h.introHeading}</h2>
-          <p className="mt-6 leading-relaxed text-ink/75">{h.introText}</p>
-          <p className="mt-4 text-sm text-muted-foreground">{data.company.positioning}</p>
-          <Btn to="/about" className="mt-8">Discover Our Company</Btn>
+          <h2 className="mt-2.5 sm:mt-3 font-serif text-2xl sm:text-4xl md:text-5xl leading-tight text-forest">{h.introHeading}</h2>
+          <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-ink/75">{h.introText}</p>
+          <p className="mt-4 text-xs sm:text-sm text-muted-foreground">{data.company.positioning}</p>
+          <Btn to="/about" className="mt-6 sm:mt-8 w-full sm:w-auto">Discover Our Company</Btn>
         </div>
       </section>
 
       {/* Categories */}
-      <section className="bg-sage py-24">
+      <section className="bg-sage py-12 sm:py-16 md:py-24">
         <div className="container-x">
           <SectionHead eyebrow="What we do" title="Four ways we serve food & hospitality" />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {cats.map((c) => (
               <article key={c.title} className="card group flex flex-col overflow-hidden">
                 <Img src={c.img} alt={c.title} className="aspect-[4/3] w-full" />
-                <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-serif text-xl text-forest">{c.title}</h3>
-                  <p className="mt-2 flex-1 text-sm text-ink/70">{c.text}</p>
+                <div className="flex flex-1 flex-col p-4 sm:p-5">
+                  <h3 className="font-serif text-lg sm:text-xl text-forest">{c.title}</h3>
+                  <p className="mt-2 flex-1 text-xs sm:text-sm text-ink/70 leading-relaxed">{c.text}</p>
                   <Btn to={c.to} variant="link" className="mt-4 self-start !px-0">Learn more <Icon name="arrow" className="h-4 w-4" /></Btn>
                 </div>
               </article>
@@ -83,27 +83,27 @@ export function Home() {
       </section>
 
       {/* Featured products */}
-      <section className="container-x py-24">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <section className="container-x py-12 sm:py-16 md:py-24">
+        <div className="flex flex-col justify-between gap-4 sm:gap-6 md:flex-row md:items-end">
           <SectionHead eyebrow="Featured catalogue" title="Featured Products" text="Sample catalogue items for demonstration — confirm availability with our team." />
-          <Btn to="/products" variant="outline" className="mb-12 self-start md:self-auto">View All Products</Btn>
+          <Btn to="/products" variant="outline" className="mb-8 sm:mb-12 self-start md:self-auto w-full sm:w-auto">View All Products</Btn>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((p) => <ProductCard key={p.id} p={p} category={catName(data, p.category)} />)}
         </div>
       </section>
 
       {/* Capabilities */}
       <section className="bg-forest text-cream">
-        <div className="container-x py-24">
+        <div className="container-x py-12 sm:py-16 md:py-24">
           <p className="eyebrow text-wheat">Capabilities</p>
-          <h2 className="mt-3 max-w-2xl font-serif text-4xl md:text-5xl">From selection to supply, handled with care</h2>
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-cream/10 sm:grid-cols-2 lg:grid-cols-4">
+          <h2 className="mt-2.5 sm:mt-3 max-w-2xl font-serif text-2xl sm:text-4xl md:text-5xl">From selection to supply, handled with care</h2>
+          <div className="mt-8 sm:mt-14 grid gap-px overflow-hidden rounded-2xl bg-cream/10 sm:grid-cols-2 lg:grid-cols-4">
             {h.capabilities.map((c) => (
-              <div key={c.id} className="bg-forest p-7">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-cream/10 text-wheat"><Icon name={c.icon} className="h-6 w-6" /></span>
-                <h3 className="mt-5 font-serif text-xl">{c.title}</h3>
-                <p className="mt-2 text-sm text-cream/70">{c.text}</p>
+              <div key={c.id} className="bg-forest p-5 sm:p-7">
+                <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-cream/10 text-wheat"><Icon name={c.icon} className="h-5 w-5 sm:h-6 sm:w-6" /></span>
+                <h3 className="mt-4 sm:mt-5 font-serif text-lg sm:text-xl">{c.title}</h3>
+                <p className="mt-2 text-xs sm:text-sm text-cream/70 leading-relaxed">{c.text}</p>
               </div>
             ))}
           </div>
@@ -111,16 +111,16 @@ export function Home() {
       </section>
 
       {/* Portfolio */}
-      <section className="container-x py-24">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <section className="container-x py-12 sm:py-16 md:py-24">
+        <div className="flex flex-col justify-between gap-4 sm:gap-6 md:flex-row md:items-end">
           <SectionHead eyebrow="Portfolio" title="Featured Projects" text="Illustrative project concepts showing how we approach food, beverage and hospitality engagements." />
-          <Btn to="/portfolio" variant="outline" className="mb-12 self-start md:self-auto">View Portfolio</Btn>
+          <Btn to="/portfolio" variant="outline" className="mb-8 sm:mb-12 self-start md:self-auto w-full sm:w-auto">View Portfolio</Btn>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">{projects.map((p) => <ProjectCard key={p.id} p={p} />)}</div>
+        <div className="grid gap-5 sm:gap-6 md:grid-cols-3">{projects.map((p) => <ProjectCard key={p.id} p={p} />)}</div>
       </section>
 
       {/* Process */}
-      <section className="bg-sage py-24">
+      <section className="bg-sage py-12 sm:py-16 md:py-24">
         <div className="container-x">
           <SectionHead eyebrow="Quality & process" title="A proposed service workflow" text="An outline of how we intend to work with customers — not a certification or guaranteed procedure." />
           <ProcessSteps steps={data.process} />
@@ -128,25 +128,25 @@ export function Home() {
       </section>
 
       {/* Banner */}
-      <section className="container-x py-24">
-        <div className="relative overflow-hidden rounded-3xl bg-terracotta px-8 py-16 text-cream md:px-16">
-          <h2 className="max-w-2xl font-serif text-3xl md:text-5xl">{h.bannerHeading}</h2>
-          <p className="mt-4 max-w-xl text-cream/90">{h.bannerText}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Btn to="/hospitality#requirements" variant="light">Request a Business Consultation</Btn>
-            <Btn to="/contact" variant="ghost-light">Contact Our Team</Btn>
+      <section className="container-x py-12 sm:py-16 md:py-24">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-terracotta px-5 py-10 sm:px-8 sm:py-16 md:px-16 text-cream">
+          <h2 className="max-w-2xl font-serif text-2xl sm:text-3xl md:text-5xl">{h.bannerHeading}</h2>
+          <p className="mt-3 sm:mt-4 max-w-xl text-xs sm:text-base text-cream/90 leading-relaxed">{h.bannerText}</p>
+          <div className="mt-6 sm:mt-8 flex flex-col gap-3 sm:flex-row">
+            <Btn to="/hospitality#requirements" variant="light" className="w-full sm:w-auto justify-center">Request a Business Consultation</Btn>
+            <Btn to="/contact" variant="ghost-light" className="w-full sm:w-auto justify-center">Contact Our Team</Btn>
           </div>
         </div>
       </section>
 
       {testimonials.length > 0 && (
-        <section className="container-x pb-24">
+        <section className="container-x pb-12 sm:pb-24">
           <SectionHead eyebrow="Testimonials" title="What customers say" center />
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-5 sm:gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
-              <figure key={t.id} className="card p-7">
-                <blockquote className="font-serif text-lg text-ink">“{t.quote}”</blockquote>
-                <figcaption className="mt-4 text-sm text-muted-foreground">{t.name} · {t.role}</figcaption>
+              <figure key={t.id} className="card p-5 sm:p-7">
+                <blockquote className="font-serif text-base sm:text-lg text-ink">“{t.quote}”</blockquote>
+                <figcaption className="mt-4 text-xs sm:text-sm text-muted-foreground">{t.name} · {t.role}</figcaption>
               </figure>
             ))}
           </div>
@@ -154,15 +154,15 @@ export function Home() {
       )}
 
       {/* Contact preview */}
-      <section className="bg-card py-24">
-        <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.3fr]">
+      <section className="bg-card py-12 sm:py-16 md:py-24">
+        <div className="container-x grid gap-8 sm:gap-12 lg:grid-cols-[1fr_1.3fr]">
           <div>
             <p className="eyebrow">Contact</p>
-            <h2 className="mt-3 font-serif text-4xl text-forest">{h.contactHeading}</h2>
-            <p className="mt-4 mb-8 text-ink/70">{data.company.name}</p>
+            <h2 className="mt-2.5 sm:mt-3 font-serif text-2xl sm:text-4xl text-forest">{h.contactHeading}</h2>
+            <p className="mt-3 mb-6 sm:mb-8 text-xs sm:text-base text-ink/70">{data.company.name}</p>
             <ContactDetails />
           </div>
-          <div className="card p-6 md:p-8"><EnquiryForm /></div>
+          <div className="card p-4 sm:p-6 md:p-8"><EnquiryForm /></div>
         </div>
       </section>
     </>
@@ -176,58 +176,58 @@ export function About() {
   return (
     <>
       <PageHero eyebrow="About Us" title={c.name} text={c.positioning} image={IMG.restaurant} />
-      <section className="container-x grid gap-12 py-20 md:grid-cols-2">
+      <section className="container-x grid gap-8 sm:gap-12 py-12 sm:py-16 md:py-20 md:grid-cols-2">
         <div>
           <SectionHead eyebrow="Company overview" title="Who we are" />
-          <p className="leading-relaxed text-ink/75">{c.description}</p>
-          <p className="mt-4 leading-relaxed text-ink/75">{c.overview}</p>
+          <p className="text-sm sm:text-base leading-relaxed text-ink/75">{c.description}</p>
+          <p className="mt-4 text-sm sm:text-base leading-relaxed text-ink/75">{c.overview}</p>
         </div>
-        <Img src={IMG.kitchen} alt="Food preparation" className="aspect-[4/3] w-full rounded-3xl" />
+        <Img src={IMG.kitchen} alt="Food preparation" className="aspect-[4/3] w-full rounded-2xl sm:rounded-3xl" />
       </section>
-      <section className="bg-sage py-20">
-        <div className="container-x grid gap-6 md:grid-cols-3">
+      <section className="bg-sage py-12 sm:py-16 md:py-20">
+        <div className="container-x grid gap-5 sm:gap-6 md:grid-cols-3">
           {[["Business philosophy", c.philosophy], ["Mission", c.mission], ["Vision", c.vision]].map(([t, x]) => (
-            <div key={t} className="card p-8"><p className="eyebrow">{t}</p><p className="mt-4 font-serif text-xl leading-snug text-forest">{x}</p></div>
+            <div key={t} className="card p-5 sm:p-8"><p className="eyebrow">{t}</p><p className="mt-3 sm:mt-4 font-serif text-lg sm:text-xl leading-snug text-forest">{x}</p></div>
           ))}
         </div>
       </section>
-      <section className="container-x py-20">
+      <section className="container-x py-12 sm:py-16 md:py-20">
         <SectionHead eyebrow="Core values" title="What guides our work" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {lines(c.values).map((v, i) => (
-            <div key={v} className="flex items-center gap-4 rounded-2xl border border-line bg-card p-5">
-              <span className="font-serif text-2xl text-wheat">{String(i + 1).padStart(2, "0")}</span><span className="font-medium">{v}</span>
+            <div key={v} className="flex items-center gap-3 sm:gap-4 rounded-xl sm:rounded-2xl border border-line bg-card p-4 sm:p-5">
+              <span className="font-serif text-xl sm:text-2xl text-wheat">{String(i + 1).padStart(2, "0")}</span><span className="font-medium text-xs sm:text-base">{v}</span>
             </div>
           ))}
         </div>
       </section>
-      <section className="bg-card py-20">
+      <section className="bg-card py-12 sm:py-16 md:py-20">
         <div className="container-x">
           <SectionHead eyebrow="Business categories" title="Our areas of focus" />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {[...data.categories].sort((a, b) => a.order - b.order).map((cat) => (
-              <Link key={cat.id} to={`/products?cat=${cat.id}`} className="rounded-2xl bg-sage p-5 font-serif text-lg text-forest hover:bg-forest hover:text-cream">{cat.name}</Link>
+              <Link key={cat.id} to={`/products?cat=${cat.id}`} className="rounded-xl sm:rounded-2xl bg-sage p-4 sm:p-5 font-serif text-base sm:text-lg text-forest hover:bg-forest hover:text-cream text-center sm:text-left">{cat.name}</Link>
             ))}
           </div>
         </div>
       </section>
-      <section className="container-x py-20">
+      <section className="container-x py-12 sm:py-16 md:py-20">
         <SectionHead eyebrow="Directors / Promoters" title="Leadership" />
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
           {data.team.map((t) => (
-            <div key={t.id} className="card flex gap-5 p-6">
+            <div key={t.id} className="card flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-5 p-5 sm:p-6">
               {t.image ? <Img src={t.image} alt={t.name} className="h-20 w-20 shrink-0 rounded-full" /> : (
                 <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-forest font-serif text-3xl text-cream">{t.name[0]}</span>
               )}
-              <div><h3 className="font-serif text-xl text-forest">{t.name}</h3><p className="text-sm text-terracotta">{t.role}</p><p className="mt-2 text-sm text-ink/70">{t.bio}</p></div>
+              <div><h3 className="font-serif text-lg sm:text-xl text-forest">{t.name}</h3><p className="text-xs sm:text-sm text-terracotta">{t.role}</p><p className="mt-2 text-xs sm:text-sm text-ink/70 leading-relaxed">{t.bio}</p></div>
             </div>
           ))}
         </div>
       </section>
-      <section className="bg-sage py-20">
-        <div className="container-x grid gap-6 md:grid-cols-2">
-          <div className="card p-8"><p className="eyebrow">Our approach to quality</p><p className="mt-4 leading-relaxed text-ink/75">{c.qualityApproach}</p></div>
-          <div className="card p-8"><p className="eyebrow">Hospitality & commercial supply</p><p className="mt-4 leading-relaxed text-ink/75">{c.hospitalityFocus}</p></div>
+      <section className="bg-sage py-12 sm:py-16 md:py-20">
+        <div className="container-x grid gap-5 sm:gap-6 md:grid-cols-2">
+          <div className="card p-5 sm:p-8"><p className="eyebrow">Our approach to quality</p><p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-ink/75">{c.qualityApproach}</p></div>
+          <div className="card p-5 sm:p-8"><p className="eyebrow">Hospitality & commercial supply</p><p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-ink/75">{c.hospitalityFocus}</p></div>
         </div>
       </section>
       <CtaStrip />
@@ -237,10 +237,10 @@ export function About() {
 
 function CtaStrip() {
   return (
-    <section className="container-x py-20 text-center">
-      <h2 className="font-serif text-3xl text-forest md:text-4xl">Have a food or beverage requirement?</h2>
-      <p className="mt-3 text-ink/70">Tell us what you need and we'll get back to you.</p>
-      <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row"><Btn to="/contact">Contact Us</Btn><Btn to="/products" variant="outline">Browse Products</Btn></div>
+    <section className="container-x py-12 sm:py-20 text-center">
+      <h2 className="font-serif text-2xl sm:text-3xl text-forest md:text-4xl">Have a food or beverage requirement?</h2>
+      <p className="mt-3 text-xs sm:text-base text-ink/70">Tell us what you need and we'll get back to you.</p>
+      <div className="mt-6 sm:mt-7 flex flex-col justify-center gap-3 sm:flex-row"><Btn to="/contact" className="w-full sm:w-auto">Contact Us</Btn><Btn to="/products" variant="outline" className="w-full sm:w-auto">Browse Products</Btn></div>
     </section>
   );
 }
@@ -251,6 +251,9 @@ function Catalogue({ base, lockedCats, title }) {
   const { search } = useRouter();
   const allCats = [...data.categories].sort((a, b) => a.order - b.order).filter((c) => !lockedCats || lockedCats.includes(c.id));
   const [cat, setCat] = useState(search.get("cat") || "all");
+  useEffect(() => {
+    setCat(search.get("cat") || "all");
+  }, [search]);
   const [q, setQ] = useState("");
   const [sort, setSort] = useState("az");
   const list = useMemo(() => {
@@ -261,17 +264,17 @@ function Catalogue({ base, lockedCats, title }) {
   const clear = () => { setCat("all"); setQ(""); setSort("az"); };
   return (
     <div>
-      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
         {allCats.length > 1 && <Chips value={cat} onChange={setCat} options={[{ id: "all", name: "All" }, ...allCats]} />}
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-2.5 sm:flex-row w-full lg:w-auto">
           <SearchBar value={q} onChange={setQ} placeholder={`Search ${title}`} />
-          <select aria-label="Sort" value={sort} onChange={(e) => setSort(e.target.value)} className="input sm:w-40">
+          <select aria-label="Sort" value={sort} onChange={(e) => setSort(e.target.value)} className="input w-full sm:w-40">
             <option value="az">Name A–Z</option><option value="za">Name Z–A</option>
           </select>
         </div>
       </div>
       {list.length ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{list.map((p) => <ProductCard key={p.id} p={p} category={catName(data, p.category)} />)}</div>
+        <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">{list.map((p) => <ProductCard key={p.id} p={p} category={catName(data, p.category)} />)}</div>
       ) : (
         <EmptyState title="No products found" text="Try a different search or category." action={<Btn variant="outline" onClick={clear}>Clear filters</Btn>} />
       )}
@@ -286,12 +289,12 @@ export function Products() {
   return (
     <>
       <PageHero eyebrow="Products" title="Our Product Catalogue" text="Premium food products, processed items, packaged beverages and culinary solutions. Items shown are sample catalogue entries." image={IMG.spices} />
-      <section className="container-x py-16">
-        <h2 className="mb-6 font-serif text-2xl text-forest">Featured</h2>
-        <div className="mb-16 flex gap-4 overflow-x-auto pb-2">
+      <section className="container-x py-10 sm:py-16">
+        <h2 className="mb-4 sm:mb-6 font-serif text-xl sm:text-2xl text-forest">Featured</h2>
+        <div className="mb-10 sm:mb-16 flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none">
           {all.filter((p) => p.featured).map((p) => (
-            <Link key={p.id} to={`/products/${p.id}`} className="card flex w-72 shrink-0 items-center gap-3 p-3">
-              <Img src={p.image} alt={p.name} className="h-16 w-16 rounded-lg" /><span className="font-serif text-forest">{p.name}</span>
+            <Link key={p.id} to={`/products/${p.id}`} className="card flex w-60 sm:w-72 shrink-0 items-center gap-3 p-3">
+              <Img src={p.image} alt={p.name} className="h-14 w-14 sm:h-16 sm:w-16 rounded-lg shrink-0" /><span className="font-serif text-sm sm:text-base text-forest line-clamp-2">{p.name}</span>
             </Link>
           ))}
         </div>
@@ -309,35 +312,40 @@ export function ProductDetails({ id }) {
   const rows = [["Packaging", p.packaging], ["Available variants", p.variants], ["Storage", p.storage]].filter((r) => r[1]);
   return (
     <>
-      <section className="container-x py-12">
-        <Link to="/products" className="text-sm text-muted-foreground hover:text-forest">← All products</Link>
-        <div className="mt-6 grid gap-12 lg:grid-cols-2">
-          <Img src={p.image} alt={p.name} eager className="aspect-square w-full rounded-3xl" />
+      <section className="container-x py-8 sm:py-12">
+        <Link to="/products" className="text-xs sm:text-sm text-muted-foreground hover:text-forest">← All products</Link>
+        <div className="mt-4 sm:mt-6 grid gap-8 lg:gap-12 lg:grid-cols-2">
+          <Img src={p.image} alt={p.name} eager className="aspect-[4/3] sm:aspect-square w-full rounded-2xl sm:rounded-3xl" />
           <div>
             <p className="eyebrow">{catName(data, p.category)}</p>
-            <h1 className="mt-3 font-serif text-4xl text-forest md:text-5xl">{p.name}</h1>
-            <div className="mt-4"><Badge>{p.availability}</Badge></div>
-            <p className="mt-6 leading-relaxed text-ink/75">{p.description}</p>
+            <h1 className="mt-2 sm:mt-3 font-serif text-2xl sm:text-4xl text-forest md:text-5xl">{p.name}</h1>
+            <div className="mt-3 sm:mt-4"><Badge>{p.availability}</Badge></div>
+            <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-ink/75">{p.description}</p>
             {rows.length > 0 && (
-              <dl className="mt-8 divide-y divide-line rounded-2xl border border-line bg-card">
-                {rows.map(([k, v]) => <div key={k} className="grid grid-cols-3 gap-4 p-4 text-sm"><dt className="text-muted-foreground">{k}</dt><dd className="col-span-2">{v}</dd></div>)}
+              <dl className="mt-6 sm:mt-8 divide-y divide-line rounded-xl sm:rounded-2xl border border-line bg-card">
+                {rows.map(([k, v]) => (
+                  <div key={k} className="grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 p-3.5 sm:p-4 text-xs sm:text-sm">
+                    <dt className="font-medium text-muted-foreground">{k}</dt>
+                    <dd className="sm:col-span-2 text-ink">{v}</dd>
+                  </div>
+                ))}
               </dl>
             )}
-            <p className="mt-4 text-xs text-muted-foreground">Sample catalogue data — please confirm specifications with our team.</p>
-            <Btn to="#enquire" className="mt-6" onClick={(e) => { e.preventDefault(); document.getElementById("enquire")?.scrollIntoView({ behavior: "smooth" }); }}>Enquire About This Product</Btn>
+            <p className="mt-4 text-[11px] sm:text-xs text-muted-foreground">Sample catalogue data — please confirm specifications with our team.</p>
+            <Btn to="#enquire" className="mt-6 w-full sm:w-auto" onClick={(e) => { e.preventDefault(); document.getElementById("enquire")?.scrollIntoView({ behavior: "smooth" }); }}>Enquire About This Product</Btn>
           </div>
         </div>
       </section>
-      <section id="enquire" className="bg-sage py-16">
+      <section id="enquire" className="bg-sage py-10 sm:py-16">
         <div className="container-x max-w-3xl">
-          <h2 className="mb-6 font-serif text-3xl text-forest">Product enquiry</h2>
-          <div className="card p-6 md:p-8"><EnquiryForm defaultCategory="Product Enquiry" product={p.name} /></div>
+          <h2 className="mb-4 sm:mb-6 font-serif text-2xl sm:text-3xl text-forest">Product enquiry</h2>
+          <div className="card p-4 sm:p-6 md:p-8"><EnquiryForm defaultCategory="Product Enquiry" product={p.name} /></div>
         </div>
       </section>
       {related.length > 0 && (
-        <section className="container-x py-16">
-          <h2 className="mb-8 font-serif text-3xl text-forest">Related products</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{related.map((r) => <ProductCard key={r.id} p={r} category={catName(data, r.category)} />)}</div>
+        <section className="container-x py-10 sm:py-16">
+          <h2 className="mb-6 sm:mb-8 font-serif text-2xl sm:text-3xl text-forest">Related products</h2>
+          <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">{related.map((r) => <ProductCard key={r.id} p={r} category={catName(data, r.category)} />)}</div>
         </section>
       )}
     </>
@@ -351,14 +359,14 @@ export function Manufacturing() {
   return (
     <>
       <PageHero eyebrow="Food Manufacturing & Processing" title="Thoughtful preparation, from ingredient to package" text="Our manufacturing and processing focus is built around understanding each product and the people it serves." image={IMG.kitchen} />
-      <section className="container-x space-y-20 py-20">
+      <section className="container-x space-y-12 sm:space-y-20 py-12 sm:py-20">
         {blocks.map((b, i) => (
-          <div key={b.id} className={`grid items-center gap-10 md:grid-cols-2 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
-            <Img src={b.image} alt={b.title} className="aspect-[4/3] w-full rounded-3xl" />
+          <div key={b.id} className={`grid items-center gap-6 sm:gap-10 md:grid-cols-2 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+            <Img src={b.image} alt={b.title} className="aspect-[4/3] w-full rounded-2xl sm:rounded-3xl" />
             <div>
-              <span className="font-serif text-5xl text-wheat">{String(i + 1).padStart(2, "0")}</span>
-              <h2 className="mt-2 font-serif text-3xl text-forest">{b.title}</h2>
-              <p className="mt-4 leading-relaxed text-ink/75">{b.description}</p>
+              <span className="font-serif text-4xl sm:text-5xl text-wheat">{String(i + 1).padStart(2, "0")}</span>
+              <h2 className="mt-2 font-serif text-2xl sm:text-3xl text-forest">{b.title}</h2>
+              <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-ink/75">{b.description}</p>
               <Btn to="/contact#enquiry" variant="link" className="mt-4 !px-0">Enquire about this <Icon name="arrow" className="h-4 w-4" /></Btn>
             </div>
           </div>
@@ -377,14 +385,14 @@ export function Beverages() {
   return (
     <>
       <PageHero eyebrow="Packaged Beverages" title="Refreshing beverages, thoughtfully packaged" text="Demonstration catalogue — sample beverage products shown for illustration." image={IMG.drinks} />
-      <section className="container-x py-16">
-        <div className="mb-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {groups.map((g) => <div key={g} className="rounded-2xl bg-sage p-6"><Icon name="bottle" className="h-6 w-6 text-terracotta" /><h3 className="mt-3 font-serif text-lg text-forest">{g}</h3></div>)}
+      <section className="container-x py-10 sm:py-16">
+        <div className="mb-10 sm:mb-14 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {groups.map((g) => <div key={g} className="rounded-xl sm:rounded-2xl bg-sage p-4 sm:p-6"><Icon name="bottle" className="h-5 w-5 sm:h-6 sm:w-6 text-terracotta" /><h3 className="mt-2.5 sm:mt-3 font-serif text-base sm:text-lg text-forest">{g}</h3></div>)}
         </div>
         <Catalogue base={bev} lockedCats={["beverages"]} title="beverages" />
       </section>
-      <section className="bg-sage py-16">
-        <div className="container-x max-w-3xl"><h2 className="mb-6 font-serif text-3xl text-forest">Beverage enquiry</h2><div className="card p-6 md:p-8"><EnquiryForm defaultCategory="Packaged Beverages" /></div></div>
+      <section className="bg-sage py-10 sm:py-16">
+        <div className="container-x max-w-3xl"><h2 className="mb-4 sm:mb-6 font-serif text-2xl sm:text-3xl text-forest">Beverage enquiry</h2><div className="card p-4 sm:p-6 md:p-8"><EnquiryForm defaultCategory="Packaged Beverages" /></div></div>
       </section>
     </>
   );
@@ -397,20 +405,20 @@ export function Hospitality() {
   return (
     <>
       <PageHero eyebrow="Hospitality Solutions" title="Food & beverage support for homes and hospitality" text="Residential and commercial culinary requirements, coordinated end to end." image={IMG.dining} />
-      <section className="container-x py-20">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="container-x py-12 sm:py-20">
+        <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
             <article key={s.id} className="card overflow-hidden">
               <Img src={s.image} alt={s.title} className="aspect-[16/10] w-full" />
-              <div className="p-6"><h3 className="font-serif text-xl text-forest">{s.title}</h3><p className="mt-2 text-sm text-ink/70">{s.description}</p></div>
+              <div className="p-4 sm:p-6"><h3 className="font-serif text-lg sm:text-xl text-forest">{s.title}</h3><p className="mt-2 text-xs sm:text-sm text-ink/70 leading-relaxed">{s.description}</p></div>
             </article>
           ))}
         </div>
       </section>
-      <section id="requirements" className="bg-sage py-20">
+      <section id="requirements" className="bg-sage py-12 sm:py-20">
         <div className="container-x max-w-4xl">
           <SectionHead eyebrow="Business requirement form" title="Tell us about your project" />
-          <div className="card p-6 md:p-8"><RequirementForm /></div>
+          <div className="card p-4 sm:p-6 md:p-8"><RequirementForm /></div>
         </div>
       </section>
     </>
@@ -441,28 +449,47 @@ function RequirementForm() {
     setDone(item.id); setF(blank);
   };
   if (done) return (
-    <div><p className="flex items-center gap-2 font-semibold text-forest"><Icon name="check" /> Requirement saved — reference {done}</p>
-      <p className="mt-2 text-sm text-ink/70">Demo mode: stored locally in this browser only; not sent to the company inbox.</p>
-      <Btn variant="ghost" className="mt-4" onClick={() => setDone(null)}>Submit another</Btn></div>
+    <div>
+      <p className="flex items-center gap-2 font-semibold text-forest"><Icon name="check" className="h-5 w-5" /> Requirement saved — reference {done}</p>
+      <p className="mt-2 text-xs sm:text-sm text-ink/70">Demo mode: stored locally in this browser only; not sent to the company inbox.</p>
+      <Btn variant="ghost" className="mt-4 w-full sm:w-auto" onClick={() => setDone(null)}>Submit another</Btn>
+    </div>
   );
-  const F = ({ k, label, req, type = "text" }) => null;
+
   return (
-    <form onSubmit={submit} noValidate className="grid gap-4 sm:grid-cols-2">
+    <form onSubmit={submit} noValidate className="grid gap-3.5 sm:gap-4 sm:grid-cols-2">
       {[["name", "Contact person", true], ["company", "Company / organization"], ["email", "Email", true], ["phone", "Phone", true]].map(([k, l, r]) => (
-        <label key={k} className="block"><span className="mb-1.5 block text-sm font-medium">{l}{r && <span className="text-terracotta"> *</span>}</span>
-          <input className="input" value={f[k]} onChange={set(k)} />{err[k] && <span className="mt-1 block text-xs text-destructive">{err[k]}</span>}</label>
+        <label key={k} className="block">
+          <span className="mb-1.5 block text-xs sm:text-sm font-medium">{l}{r && <span className="text-terracotta"> *</span>}</span>
+          <input className="input" value={f[k]} onChange={set(k)} />
+          {err[k] && <span className="mt-1 block text-xs text-destructive">{err[k]}</span>}
+        </label>
       ))}
-      <label className="block"><span className="mb-1.5 block text-sm font-medium">Project type</span>
+      <label className="block">
+        <span className="mb-1.5 block text-xs sm:text-sm font-medium">Project type</span>
         <select className="input" value={f.projectType} onChange={set("projectType")}>
           {["Residential Culinary", "Commercial Hospitality", "Event / Catering", "Bulk Supply", "Beverage Supply", "Other"].map((o) => <option key={o}>{o}</option>)}
-        </select></label>
-      <label className="block"><span className="mb-1.5 block text-sm font-medium">Approximate quantity</span><input className="input" value={f.quantity} onChange={set("quantity")} /></label>
-      <label className="block sm:col-span-2"><span className="mb-1.5 block text-sm font-medium">Required products or services <span className="text-terracotta">*</span></span>
-        <input className="input" value={f.needs} onChange={set("needs")} />{err.needs && <span className="mt-1 block text-xs text-destructive">{err.needs}</span>}</label>
-      <label className="block"><span className="mb-1.5 block text-sm font-medium">Required timeline</span><input className="input" value={f.timeline} onChange={set("timeline")} placeholder="e.g. within 4 weeks" /></label>
-      <label className="block sm:col-span-2"><span className="mb-1.5 block text-sm font-medium">Additional requirements</span><textarea rows={3} className="input" value={f.extra} onChange={set("extra")} /></label>
-      <p className="text-xs text-muted-foreground sm:col-span-2">Demo website: submissions are stored only in this browser.</p>
-      <Btn type="submit" className="sm:col-span-2 sm:justify-self-start">Submit Requirement</Btn>
+        </select>
+      </label>
+      <label className="block">
+        <span className="mb-1.5 block text-xs sm:text-sm font-medium">Approximate quantity</span>
+        <input className="input" value={f.quantity} onChange={set("quantity")} placeholder="e.g. 500 units/mo" />
+      </label>
+      <label className="block sm:col-span-2">
+        <span className="mb-1.5 block text-xs sm:text-sm font-medium">Required products or services <span className="text-terracotta">*</span></span>
+        <input className="input" value={f.needs} onChange={set("needs")} placeholder="e.g. customized menu or bottled beverages" />
+        {err.needs && <span className="mt-1 block text-xs text-destructive">{err.needs}</span>}
+      </label>
+      <label className="block sm:col-span-2">
+        <span className="mb-1.5 block text-xs sm:text-sm font-medium">Required timeline</span>
+        <input className="input" value={f.timeline} onChange={set("timeline")} placeholder="e.g. within 4 weeks" />
+      </label>
+      <label className="block sm:col-span-2">
+        <span className="mb-1.5 block text-xs sm:text-sm font-medium">Additional requirements</span>
+        <textarea rows={3} className="input" value={f.extra} onChange={set("extra")} placeholder="Packaging notes, specific culinary restrictions, delivery frequency..." />
+      </label>
+      <p className="text-[11px] sm:text-xs text-muted-foreground sm:col-span-2">Demo website: submissions are stored only in this browser.</p>
+      <Btn type="submit" className="w-full sm:w-auto sm:col-span-2 sm:justify-self-start">Submit Requirement</Btn>
     </form>
   );
 }
@@ -479,23 +506,23 @@ export function Portfolio() {
   return (
     <>
       <PageHero eyebrow="Portfolio" title="Projects & concepts" text="Illustrative sample projects — they do not represent named real clients." image={IMG.buffet} />
-      <section className="container-x py-16">
+      <section className="container-x py-10 sm:py-16">
         {featured && (
-          <Link to={`/portfolio/${featured.id}`} className="card mb-14 grid overflow-hidden md:grid-cols-2">
+          <Link to={`/portfolio/${featured.id}`} className="card mb-10 sm:mb-14 grid overflow-hidden md:grid-cols-2">
             <Img src={featured.image} alt={featured.title} className="aspect-[4/3] h-full w-full" />
-            <div className="flex flex-col justify-center p-8 md:p-12">
-              <p className="eyebrow">Featured · {featured.category}</p>
-              <h2 className="mt-3 font-serif text-3xl text-forest">{featured.title}</h2>
-              <p className="mt-3 text-ink/70">{featured.summary}</p>
-              <span className="mt-6 inline-flex items-center gap-1 font-medium text-terracotta">View project <Icon name="arrow" className="h-4 w-4" /></span>
+            <div className="flex flex-col justify-center p-5 sm:p-8 md:p-12">
+              <p className="eyebrow text-xs">Featured · {featured.category}</p>
+              <h2 className="mt-2.5 sm:mt-3 font-serif text-2xl sm:text-3xl text-forest">{featured.title}</h2>
+              <p className="mt-2.5 sm:mt-3 text-xs sm:text-base text-ink/70 leading-relaxed">{featured.summary}</p>
+              <span className="mt-4 sm:mt-6 inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-terracotta">View project <Icon name="arrow" className="h-4 w-4" /></span>
             </div>
           </Link>
         )}
-        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Chips value={cat} onChange={setCat} options={[{ id: "all", name: "All" }, ...PCATS.map((c) => ({ id: c, name: c }))]} />
           <SearchBar value={q} onChange={setQ} placeholder="Search projects" />
         </div>
-        {list.length ? <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{list.map((p) => <ProjectCard key={p.id} p={p} />)}</div>
+        {list.length ? <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">{list.map((p) => <ProjectCard key={p.id} p={p} />)}</div>
           : <EmptyState title="No projects found" action={<Btn variant="outline" onClick={() => { setCat("all"); setQ(""); }}>Clear filters</Btn>} />}
       </section>
     </>
@@ -510,19 +537,29 @@ export function ProjectDetails({ id }) {
   const related = data.projects.filter((x) => x.published && x.id !== p.id && x.category === p.category).concat(data.projects.filter((x) => x.published && x.id !== p.id && x.category !== p.category)).slice(0, 3);
   return (
     <>
-      <section className="container-x py-12">
-        <Link to="/portfolio" className="text-sm text-muted-foreground hover:text-forest">← Portfolio</Link>
-        <p className="eyebrow mt-8">{p.category}</p>
-        <h1 className="mt-3 max-w-3xl font-serif text-4xl text-forest md:text-6xl">{p.title}</h1>
-        <div className="mt-4 flex flex-wrap gap-2"><Badge tone="badge-wheat">{p.status}</Badge>{lines((p.tags || "").replace(/,/g, "\n")).map((t) => <Badge key={t} tone="badge-green">{t}</Badge>)}</div>
-        <Img src={p.image} alt={p.title} eager className="mt-10 aspect-[21/9] w-full rounded-3xl" />
-        <div className="mt-10 grid gap-10 md:grid-cols-[2fr_1fr]">
-          <div><p className="text-lg leading-relaxed text-ink/80">{p.description}</p>
-            <p className="mt-6 rounded-xl bg-sage p-4 text-sm text-ink/70">This is an illustrative/sample project for demonstration and does not represent a specific real client.</p></div>
-          <div className="card h-fit p-6"><h3 className="font-serif text-xl text-forest">Planning something similar?</h3><Btn to="/contact#enquiry" className="mt-4 w-full">Contact Us</Btn></div>
+      <section className="container-x py-8 sm:py-12">
+        <Link to="/portfolio" className="text-xs sm:text-sm text-muted-foreground hover:text-forest">← Portfolio</Link>
+        <p className="eyebrow mt-6 sm:mt-8">{p.category}</p>
+        <h1 className="mt-2 sm:mt-3 max-w-3xl font-serif text-2xl sm:text-4xl text-forest md:text-6xl">{p.title}</h1>
+        <div className="mt-3 sm:mt-4 flex flex-wrap gap-2"><Badge tone="badge-wheat">{p.status}</Badge>{lines((p.tags || "").replace(/,/g, "\n")).map((t) => <Badge key={t} tone="badge-green">{t}</Badge>)}</div>
+        <Img src={p.image} alt={p.title} eager className="mt-6 sm:mt-10 aspect-[16/9] sm:aspect-[21/9] w-full rounded-2xl sm:rounded-3xl" />
+        <div className="mt-6 sm:mt-10 grid gap-6 sm:gap-10 md:grid-cols-[2fr_1fr]">
+          <div>
+            <p className="text-sm sm:text-lg leading-relaxed text-ink/80">{p.description}</p>
+            <p className="mt-6 rounded-xl bg-sage p-4 text-xs sm:text-sm text-ink/70">This is an illustrative/sample project for demonstration and does not represent a specific real client.</p>
+          </div>
+          <div className="card h-fit p-5 sm:p-6">
+            <h3 className="font-serif text-lg sm:text-xl text-forest">Planning something similar?</h3>
+            <Btn to="/contact#enquiry" className="mt-4 w-full">Contact Us</Btn>
+          </div>
         </div>
       </section>
-      {related.length > 0 && <section className="container-x pb-20"><h2 className="mb-8 font-serif text-3xl text-forest">Related projects</h2><div className="grid gap-6 md:grid-cols-3">{related.map((r) => <ProjectCard key={r.id} p={r} />)}</div></section>}
+      {related.length > 0 && (
+        <section className="container-x pb-12 sm:pb-20">
+          <h2 className="mb-6 sm:mb-8 font-serif text-2xl sm:text-3xl text-forest">Related projects</h2>
+          <div className="grid gap-5 sm:gap-6 md:grid-cols-3">{related.map((r) => <ProjectCard key={r.id} p={r} />)}</div>
+        </section>
+      )}
     </>
   );
 }
@@ -533,8 +570,8 @@ export function QualityProcess() {
   return (
     <>
       <PageHero eyebrow="Quality & Process" title="How we intend to work with you" text="A proposed service workflow describing our approach — not an independently verified certification." image={IMG.intro} />
-      <section className="container-x py-20"><ProcessSteps steps={data.process} /></section>
-      <section className="bg-sage py-20"><div className="container-x max-w-3xl text-center"><p className="eyebrow">Our approach</p><p className="mt-4 font-serif text-2xl leading-snug text-forest">{data.company.qualityApproach}</p></div></section>
+      <section className="container-x py-12 sm:py-20"><ProcessSteps steps={data.process} /></section>
+      <section className="bg-sage py-12 sm:py-20"><div className="container-x max-w-3xl text-center"><p className="eyebrow">Our approach</p><p className="mt-3 sm:mt-4 font-serif text-xl sm:text-2xl leading-snug text-forest">{data.company.qualityApproach}</p></div></section>
       <CtaStrip />
     </>
   );
@@ -548,16 +585,18 @@ export function Contact() {
   return (
     <>
       <PageHero eyebrow="Contact Us" title="Let's discuss your requirements" text={data.company.name} image={IMG.restaurant} />
-      <section id="enquiry" className="container-x grid gap-12 py-20 lg:grid-cols-[1fr_1.5fr]">
+      <section id="enquiry" className="container-x grid gap-8 sm:gap-12 py-12 sm:py-20 lg:grid-cols-[1fr_1.5fr]">
         <div>
-          <h2 className="font-serif text-3xl text-forest">{data.company.name}</h2>
-          <p className="mt-3 mb-8 text-ink/70">Directors: {data.company.directors}</p>
+          <h2 className="font-serif text-2xl sm:text-3xl text-forest">{data.company.name}</h2>
+          <p className="mt-2 sm:mt-3 mb-6 sm:mb-8 text-xs sm:text-base text-ink/70">Directors: {data.company.directors}</p>
           <ContactDetails />
-          <div className="mt-6 rounded-xl border border-wheat/60 bg-card p-4 text-sm text-ink/70">Demo notice: enquiries submitted here are stored locally in this browser and are <strong>not</strong> sent to the company's email inbox.</div>
+          <div className="mt-6 rounded-xl border border-wheat/60 bg-card p-3.5 sm:p-4 text-xs sm:text-sm text-ink/70">Demo notice: enquiries submitted here are stored locally in this browser and are <strong>not</strong> sent to the company's email inbox.</div>
         </div>
-        <div className="card p-6 md:p-8">
-          <div className="mb-6 flex flex-wrap gap-2" role="tablist">
-            {tabs.map(([v, l]) => <button key={v} role="tab" aria-selected={tab === v} onClick={() => setTab(v)} className={`chip ${tab === v ? "chip-on" : ""}`}>{l} enquiry</button>)}
+        <div className="card p-4 sm:p-6 md:p-8">
+          <div className="mb-5 sm:mb-6 flex flex-wrap gap-1.5 sm:gap-2" role="tablist">
+            {tabs.map(([v, l]) => (
+              <button key={v} role="tab" aria-selected={tab === v} onClick={() => setTab(v)} className={`chip text-xs sm:text-sm ${tab === v ? "chip-on" : ""}`}>{l} enquiry</button>
+            ))}
           </div>
           <EnquiryForm defaultCategory={tab} />
         </div>
@@ -569,11 +608,14 @@ export function Contact() {
 /* ================= 404 ================= */
 export function NotFound() {
   return (
-    <section className="container-x flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
-      <p className="font-serif text-8xl text-wheat">404</p>
-      <h1 className="mt-4 font-serif text-3xl text-forest">This page isn't on the menu</h1>
-      <p className="mt-2 text-ink/70">The page you're looking for doesn't exist or has been moved.</p>
-      <div className="mt-8 flex gap-3"><Btn to="/">Go home</Btn><Btn to="/products" variant="outline">Browse products</Btn></div>
+    <section className="container-x flex min-h-[60vh] flex-col items-center justify-center py-16 sm:py-24 text-center">
+      <p className="font-serif text-6xl sm:text-8xl text-wheat">404</p>
+      <h1 className="mt-3 sm:mt-4 font-serif text-2xl sm:text-3xl text-forest">This page isn't on the menu</h1>
+      <p className="mt-2 text-xs sm:text-base text-ink/70">The page you're looking for doesn't exist or has been moved.</p>
+      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center">
+        <Btn to="/" className="w-full sm:w-auto">Go home</Btn>
+        <Btn to="/products" variant="outline" className="w-full sm:w-auto">Browse products</Btn>
+      </div>
     </section>
   );
 }

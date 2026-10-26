@@ -20,8 +20,8 @@ export const initialData = {
     primaryColor: "#174C3C",
     accentColor: "#C96F45",
     defaultBanner: IMG.hero,
-    announcement: "Demo website — catalogue items and projects shown are illustrative samples.",
-    showAnnouncement: true,
+    announcement: "",
+    showAnnouncement: false,
     demoInfo: "This is a frontend-only demonstration. All content and enquiries are stored in this browser only.",
   },
   company: {
