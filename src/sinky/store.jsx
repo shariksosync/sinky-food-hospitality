@@ -36,8 +36,8 @@ const RouterCtx = createContext({ path: "/", navigate: () => {} });
 export function RouterProvider({ initialPath, children }) {
   const [path, setPath] = useState(initialPath || "/");
   useEffect(() => {
-    setPath(window.location.pathname);
-    const onPop = () => setPath(window.location.pathname);
+    setPath(window.location.pathname + window.location.search);
+    const onPop = () => setPath(window.location.pathname + window.location.search);
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
@@ -54,7 +54,8 @@ export function RouterProvider({ initialPath, children }) {
     if (hash) setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" }), 50);
     else window.scrollTo({ top: 0 });
   }, []);
-  return <RouterCtx.Provider value={{ path, navigate }}>{children}</RouterCtx.Provider>;
+  const [pathname, search = ""] = path.split("?");
+  return <RouterCtx.Provider value={{ path: pathname || "/", search: new URLSearchParams(search), navigate }}>{children}</RouterCtx.Provider>;
 }
 export const useRouter = () => useContext(RouterCtx);
 
